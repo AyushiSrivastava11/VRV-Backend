@@ -9,7 +9,7 @@ npx tsc --init
 npm i express
 npm i @types/express --save-dev
 npm install ts-node-dev --save-dev
-
+npm i --save-dev @types/cors cors
 ```
 
 Code snippet
@@ -31,3 +31,13 @@ Start with App.ts -> server.ts -> src/
 We start with error handling
 we use ErrorMiddleware in app.ts
 ErrorMiddleware uses ErrorHandler whcih uses Error {statusCode ; constructor, Error.captureStackTrace}
+
+Time to Connect database
+```
+npm i dotenv mongoose
+```
+in utils/ create db.ts
+in server.listen connectDB
+
+Authentication
+
