@@ -255,3 +255,54 @@ After a successful login, users can view their past orders.
 
 
 
+## Menu Management Flow
+
+This project implements a robust backend system for managing menu items and categories in a restaurant application. Below is the detailed flow for the `Menu` module, showcasing the schema design, controller logic, and routing.
+
+### 1. Schemas and Models
+
+- **Category Schema**: Represents the category of menu items.
+  - Fields:
+    - `name` (required, string)
+
+- **Menu Schema**: Represents individual menu items.
+  - Fields:
+    - `name` (required, string)
+    - `description` (required, string)
+    - `price` (required, number)
+    - `image` (optional, string)
+    - `categoryId` (required, objectId, references `Category`)
+    - `type` (required, string)
+    - `size` (required, string)
+    - `availability` (required, string)
+
+### 2. Controller Methods
+
+- **Category Management**:
+  - `createCategory`: Adds a new category to the database.
+  - `updateCategory`: Updates the name of an existing category.
+  - `deleteCategory`: Deletes an existing category.
+  - `getCategory`: Fetches all categories.
+
+- **Menu Item Management**:
+  - `createMenuItem`: Adds a new menu item to the database.
+  - `updateMenuItem`: Updates an existing menu item's details.
+  - `deleteMenuItem`: Deletes an existing menu item.
+  - `getMenuItem`: Fetches all menu items.
+
+### 3. Routes
+
+The following routes are defined for category and menu item management:
+
+- **Category Routes**:
+  - `POST /create-category`: Create a new category (Admin only).
+  - `PATCH /update-category/:id`: Update a category by ID (Admin only).
+  - `DELETE /delete-category/:id`: Delete a category by ID (Admin only).
+  - `GET /get-categories`: Retrieve all categories.
+
+- **Menu Item Routes**:
+  - `POST /create-menuItem`: Create a new menu item (Admin only).
+  - `PATCH /update-menuItem/:id`: Update a menu item by ID (Admin only).
+  - `DELETE /delete-menuItem/:id`: Delete a menu item by ID (Admin only).
+  - `GET /get-menuItems`: Retrieve all menu items.
+

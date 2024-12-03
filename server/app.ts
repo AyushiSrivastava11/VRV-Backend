@@ -1,7 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import { ErrorMiddleware } from "./src/middlewares/error";
 import userRouter from "./src/routes/user.routes";
-import adminRouter from "./src/routes/admin.routes"
+import adminRouter from "./src/routes/admin.routes";
+import menuRouter from "./src/routes/menu.routes";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 export const app = express();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 //Routes
 app.use("/api/v1/admin/",adminRouter);
 app.use("/api/v1/user/",userRouter);
+app.use("/api/v1/menu/",menuRouter);
 
 //Unknown Routes
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
