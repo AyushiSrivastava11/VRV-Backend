@@ -38,6 +38,11 @@ SMTP_HOST=<SMTP host for email>
 SMTP_PORT=<SMTP port for email>
 SMTP_EMAIL=<Your email address>
 SMTP_PASSWORD=<Your email password>
+TWILIO_ACCOUNT_SID=<Twilio Account SID>
+TWILIO_AUTH_TOKEN=<Twilio Auth Token>
+TWILIO_PHONE_NUMBER=<Twilio Phone Number>
+JWT_SECRET=<JWT secret key>
+
 ```
 
 ---
@@ -62,14 +67,14 @@ npm start
 ```
 ├── src
 │   ├── controllers
-│   │   └── admin.controller.ts
+│   │   └── admin.controller.ts, user.controller.ts
 │   ├── middlewares
 │   │   ├── auth.ts
 │   │   └── catchAsyncErrors.ts
 │   ├── models
-│   │   └── admin.model.ts
+│   │   └── admin.model.ts , user.model.ts
 │   ├── routes
-│   │   └── admin.routes.ts
+│   │   └── admin.routes.ts , user.routes.ts
 │   ├── services
 │   │   └── admin.service.ts
 │   ├── utils
@@ -161,4 +166,92 @@ npm start
 | `dev`         | `npm run dev`    | Run the server in development mode |
 | `build`       | `npm run build`  | Compile TypeScript to JavaScript |
 | `start`       | `npm start`      | Run the compiled server          |
+
+
+
+Here’s the **User Section** of the `README.md`, tailored to your flow. It explains the simple, one-time-order-by-QR-code functionality, integrating the OTP-based authentication, order retrieval, and the overall flow:
+
+---
+
+# **User Authentication & Order Management (Restaurant Management System)**
+
+## **Overview**
+This section of the system handles user authentication via **OTP (One-Time Password)** for secure login and allows users to view and manage their orders. The flow is designed to be straightforward, enabling one-time orders by scanning a **QR Code**. The system focuses on easy user authentication and order management for a seamless experience.
+
+---
+
+## **Features**
+- **OTP-Based Authentication:** Users authenticate using their phone number and receive a one-time OTP via SMS.
+- **Secure Login:** Once verified, users can access their profile and view their orders.
+- **Order Management:** Users can retrieve their past orders via their profile.
+
+---
+
+## **How it Works**
+
+### **1. Send OTP (Request a One-Time Password)**
+To authenticate the user and start the process, send an OTP to the user’s phone number.
+
+**Endpoint:** `/send-otp`  
+**Method:** `POST`  
+**Request Body:**
+```json
+{
+  "phone": "<user_phone_number>"
+}
+```
+
+- **Description:** This endpoint will generate a one-time OTP and send it to the provided phone number via SMS using Twilio.
+- **Response:**  
+  - **200 OK:** OTP sent successfully.
+  - **400 Bad Request:** If the phone number is not provided.
+
+### **2. Verify OTP (Authenticate User)**
+Once the OTP is received, the user must verify it to authenticate their session.
+
+**Endpoint:** `/verify-otp`  
+**Method:** `POST`  
+**Request Body:**
+```json
+{
+  "phone": "<user_phone_number>",
+  "otp": "<received_otp>"
+}
+```
+
+- **Description:** This endpoint will verify the provided OTP for the given phone number. If correct, a JWT token will be generated and returned to the user.
+- **Response:**  
+  - **200 OK:** Authentication successful, returns JWT token and user details.
+  - **400 Bad Request:** If OTP is invalid or expired.
+  - **404 Not Found:** If the OTP is not found or expired in the database.
+
+### **3. Get User Orders**
+After a successful login, users can view their past orders.
+
+**Endpoint:** `/orders`  
+**Method:** `GET`  
+**Request Headers:**
+```json
+{
+  "Authorization": "Bearer <JWT_token>"
+}
+```
+
+- **Description:** This endpoint fetches the orders associated with the authenticated user’s phone number.
+- **Response:**  
+  - **200 OK:** Returns the user’s orders.
+  - **400 Bad Request:** If the phone number or JWT token is missing or invalid.
+  - **404 Not Found:** If no user is found with the provided phone number.
+
+---
+
+## **Flow Example**
+
+1. **User Registration:** The user sends a request to `/send-otp` with their phone number. An OTP is sent via SMS.
+2. **OTP Verification:** The user then sends the received OTP to `/verify-otp`. If correct, a JWT token is generated, and they are authenticated.
+3. **Order Retrieval:** The authenticated user can then view their orders by sending a GET request to `/orders`, passing the JWT token in the header.
+
+---
+
+
 

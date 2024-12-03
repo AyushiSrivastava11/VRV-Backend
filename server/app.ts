@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { ErrorMiddleware } from "./src/middlewares/error";
-// import userRouter from "./src/routes/user.routes";
+import userRouter from "./src/routes/user.routes";
 import adminRouter from "./src/routes/admin.routes"
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -16,7 +16,7 @@ app.use(
 app.use(cookieParser());
 //Routes
 app.use("/api/v1/admin/",adminRouter);
-// app.use("/api/v1/user/",userRouter);
+app.use("/api/v1/user/",userRouter);
 
 //Unknown Routes
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
